@@ -2,7 +2,7 @@ namespace Cars.Data.Entities;
 
 public class Car
 {
-    public int Id { get; set; }
+    public int id { get; set; }
     public string name { get; set; } = null!;
     public string mpg { get; set; } = null!;
     public string cylinders { get; set; } = null!;

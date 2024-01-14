@@ -11,7 +11,17 @@ namespace Cars.Services
         {
             _carRepository = carRepository;
         }
-        
+
+        public async Task<Car> Get(int id)
+        {
+            if (car.Id == 0)
+            {
+                throw new Exception("Invalid Id");
+            }
+            return await _carRepository.Get(id);
+        }
+        {
+
         public async Task<Car> Insert(Car car)
         {
             var newId = await _carRepository.UpsertAsync(car);
