@@ -41,7 +41,8 @@ public class CarRepository : ICarRepository
         var sql = @"
         DECLARE @InsertedRows AS TABLE (Id int);
         MERGE INTO Car AS target
-        USING (SELECT @Id AS Id, @Name AS Name, @MPG as MPG, @Cylinders as Cylinders, @Displacement as Displacement, @Horsepower as Horsepower, @Weight as Weight, @Acceleration as Acceleration, @Model_Year AS Model_Year, @Origin AS origin, @Is_Deleted AS Is_Deleted ) AS source 
+        USING (SELECT @Id AS Id, @Name AS Name, @MPG as MPG, @Cylinders as Cylinders, @Displacement as Displacement, @Horsepower as Horsepower,
+        @Weight as Weight, @Acceleration as Acceleration, @Model_Year AS Model_Year, @Origin AS origin, @Is_Deleted AS Is_Deleted ) AS source 
         ON target.Id = source.Id
         WHEN MATCHED THEN 
             UPDATE SET 
@@ -57,7 +58,8 @@ public class CarRepository : ICarRepository
                 Is_Deleted = source.Is_Deleted
         WHEN NOT MATCHED THEN
             INSERT (Name, Mpg, Cylinders, Displacement, Horsepower, Weight, Acceleration, Model_Year, Origin, Is_deleted)
-            VALUES (source.Name, source.MPG, source.Cylinders, source.Displacement, source.Horsepower, source.Weight, source.Acceleration, source.Model_Year, source.Origin, source.Is_Deleted)
+            VALUES (source.Name, source.MPG, source.Cylinders, source.Displacement, source.Horsepower, source.Weight, source.Acceleration, 
+            source.Model_Year, source.Origin, source.Is_Deleted)
             OUTPUT inserted.Id INTO @InsertedRows
         ;
 
