@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Cars.Data.DTOs;
 using Cars.Data.Entities;
 
 namespace Cars.Data.Profiles
@@ -20,4 +21,5 @@ namespace Cars.Data.Profiles
                 .ForMember(car => car.origin, opt => opt.MapFrom(carDto => carDto.Origin))
                 .ReverseMap();
         }
+    }
 }
