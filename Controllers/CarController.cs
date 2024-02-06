@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using AutoMapper;
 using Cars.Data.DTOs;
 using Cars.Data.Entities;
@@ -28,6 +29,13 @@ namespace Cars.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all the cars in the Database 
+        /// </summary>
+        /// <param name="returnDeletedRecords">If true, the method will return all the records, including the ones that have been deleted</param>
+        /// <response code="200">Cars returned</response>
+        /// <response code="404">Specified Car not found</response>
+        /// <response code="500">An Internal Server Error prevented the request from being executed.</response>
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll(bool returnDeletedRecords = false)
         {
