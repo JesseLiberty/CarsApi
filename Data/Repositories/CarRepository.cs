@@ -41,17 +41,25 @@ public class CarRepository : ICarRepository
         var sql = @"
         DECLARE @InsertedRows AS TABLE (Id int);
         MERGE INTO Car AS target
-        USING (SELECT @Id AS Id, @Name AS Name, @Model_Year AS Model_Year, @Is_Deleted AS Is_Deleted, @Origin AS origin ) AS source 
+        USING (SELECT @Id AS Id, @Name AS Name, @MPG as MPG, @Cylinders as Cylinders, @Displacement as Displacement, @Horsepower as Horsepower,
+        @Weight as Weight, @Acceleration as Acceleration, @Model_Year AS Model_Year, @Origin AS origin, @Is_Deleted AS Is_Deleted ) AS source 
         ON target.Id = source.Id
         WHEN MATCHED THEN 
             UPDATE SET 
                 Name = source.Name, 
-                Model_Year = source.Model_Year, 
-                Is_Deleted = source.Is_Deleted,
-                Origin = source.Origin
+                MPG = source.MPG,
+                Cylinders = source.Cylinders,
+                Displacement = source.Displacement,
+                Horsepower = source.Horsepower,
+                Weight = source.Weight,
+                Acceleration = source.Acceleration,
+                Model_Year = source.Model_Year,
+                Origin = source.Origin,
+                Is_Deleted = source.Is_Deleted
         WHEN NOT MATCHED THEN
-            INSERT (Name, Model_Year, Is_Deleted, Origin)
-            VALUES (source.Name, source.Model_Year, source.Is_Deleted, source.Origin)
+            INSERT (Name, Mpg, Cylinders, Displacement, Horsepower, Weight, Acceleration, Model_Year, Origin, Is_deleted)
+            VALUES (source.Name, source.MPG, source.Cylinders, source.Displacement, source.Horsepower, source.Weight, source.Acceleration, 
+            source.Model_Year, source.Origin, source.Is_Deleted)
             OUTPUT inserted.Id INTO @InsertedRows
         ;
 
@@ -59,7 +67,7 @@ public class CarRepository : ICarRepository
     ";
 
         var newId = await db.QuerySingleOrDefaultAsync<int>(sql, car);
-        return newId == 0 ? car.Id : newId;
+        return newId == 0 ? car.id : newId;
     }
     public async Task<int> DeleteAsync(int id)
     {
