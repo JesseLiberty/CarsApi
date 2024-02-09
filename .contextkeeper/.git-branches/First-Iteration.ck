@@ -4,11 +4,12 @@
   "State": [
     {
       "WindowType": "MainWindow",
+      "WindowState": "Maximized",
       "Window": {
-        "Left": -68,
-        "Top": -22,
-        "Width": 3086,
-        "Height": 1665
+        "Left": 0,
+        "Top": 0,
+        "Width": 3072,
+        "Height": 1680
       },
       "Docks": [
         {
@@ -27,8 +28,7 @@
               },
               "Line": 1,
               "Column": 1,
-              "IsPinned": false,
-              "IsSelected": true
+              "IsPinned": false
             },
             {
               "FilePath": "C:\\Users\\jesse\\OneDrive\\API Book\\Programming-API-with-C-and-.NET-\\Services\\CarService.cs",
