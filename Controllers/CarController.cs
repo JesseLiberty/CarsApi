@@ -37,9 +37,9 @@ namespace Cars.Controllers
         /// <response code="404">Specified Car not found</response>
         /// <response code="500">An Internal Server Error prevented the request from being executed.</response>
         [HttpGet]
-        public async Task<IEnumerable<Car>> GetAll(bool returnDeletedRecords = false)
+        public async Task<IEnumerable<Car>> Get(bool returnDeletedRecords = false)
         {
-            return await _carRepository.GetAll(returnDeletedRecords);
+            return await _carRepository.Get(returnDeletedRecords);
         }
         
         [HttpGet("{id}")]
