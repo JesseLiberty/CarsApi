@@ -15,19 +15,7 @@ public class CarRepository : ICarRepository
     {
         this.databaseConnectionFactory = databaseConnectionFactory;
     }
-
-    //public async Task<IEnumerable<Car>> Get(bool returnDeletedRecords = false)
-    //{
-    //    var builder = new SqlBuilder();
-    //    var sqlTemplate = builder.AddTemplate("SELECT * FROM car /**where**/");
-    //    if (!returnDeletedRecords)
-    //    {
-    //        builder.Where("is_deleted=0");
-    //    }
-    //    using var db = databaseConnectionFactory.GetConnection();
-    //    return await db.QueryAsync<Car>(sqlTemplate.RawSql,sqlTemplate.Parameters);
-    //}
-    
+  
     public async Task<Car?> Get(int id)
     {
         var query = "select * from car where id=@id";
@@ -35,17 +23,25 @@ public class CarRepository : ICarRepository
         return await db.QuerySingleOrDefaultAsync<Car>(query, new {id});
     }
 
-    public async Task<IEnumerable<Car>> Get(bool returnDeletedRecords, int pageNumber, int pageSize)
+    public async Task<IEnumerable<Car>> Get(
+        bool returnDeletedRecords, 
+        int pageNumber, 
+        int pageSize)
     {
         var builder = new SqlBuilder();
-        var sqlTemplate = builder.AddTemplate("SELECT * FROM car /**where**/ ORDER BY id OFFSET @PageNumber ROWS FETCH NEXT @PageSize ROWS ONLY");
+        var sqlTemplate = builder.AddTemplate(
+            "SELECT * FROM car " +
+            "/**where**/ " +
+            "ORDER BY id OFFSET @PageNumber ROWS " +
+            "FETCH NEXT @PageSize ROWS ONLY");
         if (!returnDeletedRecords)
         {
             builder.Where("is_deleted=0");
         }
         var offset = (pageNumber - 1) * pageSize;
         using var db = databaseConnectionFactory.GetConnection();
-        return await db.QueryAsync<Car>(sqlTemplate.RawSql, new { PageNumber = pageNumber, PageSize = pageSize });
+        return await db.QueryAsync<Car>(sqlTemplate.RawSql, 
+            new { PageNumber = pageNumber, PageSize = pageSize });
     }
 
     public async Task<int> UpsertAsync(Car car)
