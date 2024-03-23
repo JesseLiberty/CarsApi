@@ -4,7 +4,11 @@ using Cars.Data.DTOs;
 using Cars.Data.Entities;
 using Cars.Data.Interfaces;
 using Cars.Data.Repositories;
+using Cars.Validators;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation.Results;
+using Cars.Validators;
+using FluentValidation;
 
 namespace Cars.Controllers
 {
@@ -37,9 +41,13 @@ namespace Cars.Controllers
         /// <response code="404">Specified Car not found</response>
         /// <response code="500">An Internal Server Error prevented the request from being executed.</response>
         [HttpGet]
-        public async Task<IEnumerable<Car>> GetAll(bool returnDeletedRecords = false)
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IEnumerable<Car>> Get(bool returnDeletedRecords = false)
         {
-            return await _carRepository.GetAll(returnDeletedRecords);
+            return await _carRepository.Get(returnDeletedRecords);
         }
         
         [HttpGet("{id}")]
@@ -63,11 +71,26 @@ namespace Cars.Controllers
                     return BadRequest("No car was provided");
                 }
 
+                CarDtoValidator validator = new CarDtoValidator();
+                //var result = validator.Validate(carAsDto);
+
+                //if (!result.IsValid)
+                //{
+                //    return BadRequest(result.Errors);
+                //}
+
+                validator.ValidateAndThrow(carAsDto);
+
                 var carToInsert = _mapper.Map<Car>(carAsDto);
                 var insertedCar = await _carService.Insert(carToInsert);
                 var insertedCarDto = _mapper.Map<CarDto>(insertedCar);
                 var location = $"https://localhost:5001/car/{insertedCarDto.Id}";
                 return Created(location, insertedCarDto);
+            }
+            catch(ValidationException e)
+            {
+                IEnumerable<ValidationFailure> errors = e.Errors;
+                return BadRequest(errors);
             }
             catch (Exception e)
             {

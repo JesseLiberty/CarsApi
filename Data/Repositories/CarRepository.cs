@@ -16,7 +16,7 @@ public class CarRepository : ICarRepository
         this.databaseConnectionFactory = databaseConnectionFactory;
     }
 
-    public async Task<IEnumerable<Car>> GetAll(bool returnDeletedRecords = false)
+    public async Task<IEnumerable<Car>> Get(bool returnDeletedRecords = false)
     {
         var builder = new SqlBuilder();
         var sqlTemplate = builder.AddTemplate("SELECT * FROM car /**where**/");
