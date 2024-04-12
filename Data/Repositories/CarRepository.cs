@@ -28,11 +28,11 @@ public class CarRepository : ICarRepository
         return await db.QueryAsync<Car>(sqlTemplate.RawSql,sqlTemplate.Parameters);
     }
     
-    public async Task<Car?> Get(int id)
+    public async Task<List<CarFlat?>> Get(int id)
     {
-        var query = "select * from car where id=@id";
+        var query = "select * from car c left join options o on o.car_id = c.id where c.id = @id";
         using var db = databaseConnectionFactory.GetConnection();
-        return await db.QuerySingleOrDefaultAsync<Car>(query, new {id});
+        return (await db.QueryAsync<CarFlat>(query, new {id})).ToList();
     }
     
     public async Task<int> UpsertAsync(Car car)

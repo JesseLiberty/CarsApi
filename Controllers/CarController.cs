@@ -53,14 +53,16 @@ namespace Cars.Controllers
         }
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<Car>> Get(int id)
+        public async Task<ActionResult<CarDto>> Get(int id)
         {
             var car = await _carService.Get(id);
             if (car == null)
             {
                 return NotFound();
             }
-            return car;
+            var carDto = _mapper.Map<CarDto>(car);
+
+            return carDto;
         }
 
         [HttpPost]
