@@ -27,8 +27,9 @@ namespace Cars.Data.Profiles
                 .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src));
 
             CreateMap<OptionsDto, CarFlat>()
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.OptionId))
-                .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.OptionName))
+                .ForMember(dest => dest.option_id, opt => opt.MapFrom(src => src.OptionId))
+                .ForMember(dest => dest.option_name, opt => opt.MapFrom(src => src.OptionName))
+                .ForMember(dest => dest.option_price, opt => opt.MapFrom(src => src.OptionPrice))
                 .ReverseMap();
         }
     }
