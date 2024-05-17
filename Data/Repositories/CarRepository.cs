@@ -33,7 +33,7 @@ public class CarRepository : ICarRepository
         var query = "select * from car c left join options o on o.car_id = c.id where c.id = @id";
         using var db = databaseConnectionFactory.GetConnection();
         return (await db.QueryAsync<CarFlat>(query, new {id})).ToList();
-    }
+    } 
     
     public async Task<int> UpsertAsync(Car car)
     {
