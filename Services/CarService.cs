@@ -12,7 +12,7 @@ namespace Cars.Services
             _carRepository = carRepository;
         }
 
-        public async Task<Car> Get(int id)
+        public async Task<List<CarFlat>> Get(int id)
         {
             if (id == 0)
             {

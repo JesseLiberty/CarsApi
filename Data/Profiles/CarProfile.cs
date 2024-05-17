@@ -20,6 +20,17 @@ namespace Cars.Data.Profiles
                 .ForMember(car => car.model_year, opt => opt.MapFrom(carDto => carDto.ModelYear))
                 .ForMember(car => car.origin, opt => opt.MapFrom(carDto => carDto.Origin))
                 .ReverseMap();
+
+            CreateMap<List<CarFlat>, CarDto>()
+                .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.First().id))
+                .ForPath(dest => dest.Name, opt => opt.MapFrom(src => src.First().name))
+                .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src));
+
+            CreateMap<OptionsDto, CarFlat>()
+                .ForMember(dest => dest.option_id, opt => opt.MapFrom(src => src.OptionId))
+                .ForMember(dest => dest.option_name, opt => opt.MapFrom(src => src.OptionName))
+                .ForMember(dest => dest.option_price, opt => opt.MapFrom(src => src.OptionPrice))
+                .ReverseMap();
         }
     }
 }

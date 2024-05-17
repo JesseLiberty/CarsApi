@@ -13,5 +13,6 @@
         public string ModelYear { get; set; }
         public string Origin { get; set; }
         public string Is_Deleted { get; set; }
+        public List<OptionsDto> Options { get; set; }
     }
 }
